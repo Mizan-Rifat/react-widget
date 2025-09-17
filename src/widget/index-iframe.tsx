@@ -1,42 +1,51 @@
-import { hydrateRoot } from 'react-dom/client';
-import { WidgetContainer } from './components/widget-container';
+import { createRoot, type Root } from 'react-dom/client';
 import './styles/style.css';
+import Widget from './components/Widget';
+
+// Global variable to track if widget has been initialized
+let isInitialized = false;
+let reactRoot: Root | null = null;
 
 // This script runs inside the iframe
-function initializeWidgetIframe(config?: any) {
+function initializeWidgetIframe() {
   try {
+    // Prevent multiple initialization
+    if (isInitialized) {
+      console.log('Widget iframe already initialized, skipping...');
+      return;
+    }
+
     const root = document.getElementById('widget-iframe-root');
+
+    console.log({ root });
     if (!root) {
       throw new Error('Widget iframe root element not found');
     }
 
-    const clientKey = config?.clientKey || getClientKeyFromWindow();
-    const component = <WidgetContainer clientKey={clientKey} />;
+    const component = <Widget />;
 
-    hydrateRoot(root, component);
+    // Create root only once and store reference
+    reactRoot = createRoot(root);
+    reactRoot.render(component);
+
+    isInitialized = true;
+    console.log('Widget iframe initialized successfully');
   } catch (error) {
     console.warn('Widget iframe initialization failed:', error);
   }
 }
 
-function getClientKeyFromWindow() {
-  // Get client key from window variable set in the dynamically created HTML
-  const clientKey = (window as any).widgetClientKey;
-
-  if (!clientKey) {
-    throw new Error('Missing widgetClientKey in window');
+// Extend window interface for TypeScript
+declare global {
+  interface Window {
+    initializeWidgetIframe: () => void;
   }
-
-  return clientKey;
 }
 
-// Make initialization function available globally
-(window as any).initializeWidgetIframe = initializeWidgetIframe;
+window.initializeWidgetIframe = initializeWidgetIframe;
 
-// Auto-initialize if config is already available
-if ((window as any).widgetConfig) {
-  initializeWidgetIframe((window as any).widgetConfig);
-} else {
-  // Initialize with URL params if no config from parent
+// Only initialize immediately if DOM is ready, otherwise let the load event handle it
+if (document.readyState === 'complete') {
   initializeWidgetIframe();
 }
+initializeWidgetIframe();

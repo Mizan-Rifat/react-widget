@@ -3,7 +3,7 @@
   @apply w-full h-full bg-white border border-gray-200 rounded-lg shadow-lg;
   /* When not in iframe, these will be overridden by parent styles */
   position: fixed;
-  bottom: 20px;
+  bottom: 70px;
   right: 20px;
   width: 300px;
   height: 400px;

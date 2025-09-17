@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { WidgetContext } from '../lib/context';
-import { Widget } from './widget';
+import { Widget } from './Widget';
 
 interface WidgetContainerProps {
   clientKey: string;

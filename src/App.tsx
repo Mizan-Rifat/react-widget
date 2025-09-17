@@ -2,11 +2,13 @@ import './App.css';
 import './widget/styles/style.css';
 
 import { WidgetContainer } from './widget/components/widget-container.tsx';
+import Widget from './widget/components/Widget.tsx';
 
 function App() {
   return (
     <>
-      <WidgetContainer clientKey={'test-key'} />
+      <Widget />
+      {/* <WidgetContainer clientKey={'test-key'} /> */}
     </>
   );
 }
