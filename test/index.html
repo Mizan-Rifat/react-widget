@@ -1,13 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Widget Test Page</title>
-</head>
-<body>
-<h1>Test Page</h1>
-<p>This page tests the widget integration.</p>
+  <title>Widget Test Page - Iframe Version</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      margin: 40px;
+      line-height: 1.6;
+    }
 
-<script async src="http://localhost:3334/widget.js" data-client-key="test-key"></script>
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .info-box {
+      background: #f0f9ff;
+      border: 1px solid #0ea5e9;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <h1>Widget Test Page - Iframe Version</h1>
+    <p>This page tests the iframe-based widget integration.</p>
+
+    <div class="info-box">
+      <h3>How it works:</h3>
+      <ul>
+        <li>The widget script creates an iframe instead of using shadow DOM</li>
+        <li>Initially shows a toggle button in the parent page</li>
+        <li>Clicking the button loads the widget content in an iframe</li>
+        <li>Parent and iframe communicate via postMessage API</li>
+      </ul>
+    </div>
+
+    <p>Look for the "Open Widget" button in the bottom-right corner of the page!</p>
+  </div>
+
+  <script async src="http://localhost:3334/widget.js" data-client-key="test-key-iframe"></script>
 </body>
+
 </html>

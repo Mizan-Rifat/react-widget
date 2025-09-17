@@ -27,7 +27,7 @@ const args = parseArgs({
 
 const env = args.values.environment;
 const production = env === 'production';
-let environmentVariablesPath = [ './.env.development' ];
+let environmentVariablesPath = ['./.env.development'];
 
 console.log(`Building widget for ${env} environment...`);
 
@@ -40,71 +40,93 @@ const ENV_VARIABLES = config({
 }).parsed;
 
 const fileName = ENV_VARIABLES.WIDGET_NAME || 'widget.js';
+const iframeFileName = ENV_VARIABLES.WIDGET_IFRAME_NAME || 'widget-iframe.js';
 
-export default {
-  input: './src/widget/index.tsx',
-  output: {
-    file: `dist/${fileName}`,
-    format: 'iife',
-    sourcemap: false,
-    inlineDynamicImports: true,
-    globals: {
-      'react/jsx-runtime': 'jsxRuntime',
-      'react-dom/client': 'ReactDOM',
-      react: 'React',
-    },
-  },
-  plugins: [
-    tsConfigPaths({
-      tsConfigPath: './tsconfig.json',
-    }),
-    replace({ preventAssignment: true }),
-    typescript({
-      tsconfig: './tsconfig.json',
-    }),
-    nodeResolve({
-      extensions: ['.tsx', '.ts', '.json', '.js', '.jsx', '.mjs'],
-      browser: true,
-      dedupe: ['react', 'react-dom'],
-    }),
-    babel({
-      babelHelpers: 'bundled',
-      presets: [
-        '@babel/preset-typescript',
-        [
-          '@babel/preset-react',
-          {
-            runtime: 'automatic',
-            targets: '>0.1%, not dead, not op_mini all',
-          },
-        ],
+const commonPlugins = [
+  tsConfigPaths({
+    tsConfigPath: './tsconfig.json',
+  }),
+  replace({ preventAssignment: true }),
+  typescript({
+    tsconfig: './tsconfig.json',
+  }),
+  nodeResolve({
+    extensions: ['.tsx', '.ts', '.json', '.js', '.jsx', '.mjs'],
+    browser: true,
+    dedupe: ['react', 'react-dom'],
+  }),
+  babel({
+    babelHelpers: 'bundled',
+    presets: [
+      '@babel/preset-typescript',
+      [
+        '@babel/preset-react',
+        {
+          runtime: 'automatic',
+          targets: '>0.1%, not dead, not op_mini all',
+        },
       ],
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs'],
-    }),
-    postcss({
-      extensions: ['.css'],
-      minimize: true,
-      extract: true,
-      inject: {
-        insertAt: 'top',
+    ],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs'],
+  }),
+  postcss({
+    extensions: ['.css'],
+    minimize: true,
+    extract: true,
+    inject: {
+      insertAt: 'top',
+    },
+  }),
+  commonjs(),
+  nodePolyfills({
+    exclude: ['crypto'],
+  }),
+  injectProcessEnv(ENV_VARIABLES),
+  terser({
+    ecma: 2020,
+    mangle: { toplevel: true },
+    compress: {
+      module: true,
+      toplevel: true,
+      unsafe_arrows: true,
+      drop_console: true,
+      drop_debugger: true,
+    },
+    output: { quote_style: 1 },
+  }),
+];
+
+export default [
+  // Main widget bundle (for parent page)
+  {
+    input: './src/widget/index.tsx',
+    output: {
+      file: `dist/${fileName}`,
+      format: 'iife',
+      sourcemap: false,
+      inlineDynamicImports: true,
+      globals: {
+        'react/jsx-runtime': 'jsxRuntime',
+        'react-dom/client': 'ReactDOM',
+        react: 'React',
       },
-    }),
-    commonjs(),
-    nodePolyfills({
-      exclude: ['crypto'],
-    }),
-    injectProcessEnv(ENV_VARIABLES),
-    terser({
-      ecma: 2020,
-      mangle: { toplevel: true },
-      compress: {
-        module: true,
-        toplevel: true,
-        unsafe_arrows: true,
-        drop_console: true,
-        drop_debugger: true,
+    },
+    plugins: commonPlugins,
+  },
+  // Iframe widget bundle
+  {
+    input: './src/widget/index-iframe.tsx',
+    output: {
+      file: `dist/${iframeFileName}`,
+      format: 'iife',
+      sourcemap: false,
+      inlineDynamicImports: true,
+      globals: {
+        'react/jsx-runtime': 'jsxRuntime',
+        'react-dom/client': 'ReactDOM',
+        react: 'React',
       },
-      output: { quote_style: 1 },
-    })
-  ],
-};
+    },
+    plugins: commonPlugins,
+  },
+];
