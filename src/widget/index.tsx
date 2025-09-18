@@ -1,5 +1,7 @@
 import './styles/style.css';
 
+const BASE_URL = getBaseUrl();
+
 function initializeWidget() {
   if (document.readyState !== 'loading') {
     onReady();
@@ -8,23 +10,30 @@ function initializeWidget() {
   }
 }
 
-function onReady() {
+async function onReady() {
   try {
-    const container = createContainer();
-    const iframe = createWidgetIframe();
+    const res = await fetch(`${BASE_URL}/widget.json`);
+    const config = await res.json();
 
-    container.appendChild(iframe);
+    (window as any).onedeskWidgetConfig = config;
+
+    console.log({ config });
+
+    const container = createContainer(config);
     document.body.appendChild(container);
-    const wigetFrameContainer = container.querySelector('.widget-iframe-root');
 
+    createWidgetIframe(container, config);
     window.addEventListener('message', function (event) {
       if (event.data.type === 'WIDGET_CLOSE') {
         document.documentElement.classList.remove('onedesk-widget-open');
-        container.style.display = 'none';
+
+        container.style.height = '65px';
+        container.style.width = '150px';
       }
       if (event.data.type === 'WIDGET_OPEN') {
         document.documentElement.classList.add('onedesk-widget-open');
-        container.style.display = 'block';
+        container.style.height = '500px';
+        container.style.width = '400px';
       }
 
       console.log('Message received:', event.data);
@@ -34,13 +43,13 @@ function onReady() {
   }
 }
 
-const createContainer = () => {
+const createContainer = (config: any) => {
   const container = document.createElement('div');
   container.id = 'onedesk-widget-container';
   container.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+    position: fixed;    
+    bottom: 0;
+    ${config.widgetPosition === 'bottomRight' ? 'right: 0;' : 'left: 0;'};
     width: 400px;
     height: 500px;
     border: none;
@@ -50,7 +59,14 @@ const createContainer = () => {
   return container;
 };
 
-function createWidgetIframe(): HTMLIFrameElement {
+function createWidgetIframe(
+  container: HTMLDivElement,
+  config: any,
+): HTMLIFrameElement {
+  const baseUrl = process.env.WIDGET_IFRAME_URL || BASE_URL;
+  const cssUrl = `${baseUrl}/widget-iframe.css`;
+  const jsUrl = `${baseUrl}/widget-iframe.js`;
+
   const iframe = document.createElement('iframe');
 
   iframe.id = 'widget-iframe';
@@ -59,36 +75,35 @@ function createWidgetIframe(): HTMLIFrameElement {
     height: 100%;
   `;
 
-  // Create iframe content using srcdoc
-  const iframeContent = createIframeHTML();
-  iframe.srcdoc = iframeContent;
+  container.appendChild(iframe);
 
-  // Initially show just a button
+  console.log({ configInIframe: (window as any).onedeskWidgetConfig });
+
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+
+  if (!iframeDoc) {
+    throw new Error('Iframe document not found');
+  }
+
+  const iframeRootDiv = iframeDoc.createElement('div');
+  iframeRootDiv.id = 'widget-iframe-root';
+  iframeDoc.body.appendChild(iframeRootDiv);
+
+  const link = iframeDoc.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = cssUrl;
+  iframeDoc.head.appendChild(link);
+
+  // Add external JS
+  const externalScript = iframeDoc.createElement('script');
+  externalScript.src = jsUrl;
+  externalScript.onload = () => {
+    // Pass config to iframe after script loads
+    iframe.contentWindow?.postMessage({ type: 'WIDGET_CONFIG', config }, '*');
+  };
+  iframeDoc.body.appendChild(externalScript);
 
   return iframe;
-}
-
-function createIframeHTML(): string {
-  const baseUrl = process.env.WIDGET_IFRAME_URL || getBaseUrl();
-  const cssUrl = `${baseUrl}/widget-iframe.css`;
-  const jsUrl = `${baseUrl}/widget-iframe.js`;
-
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Widget Iframe</title>
-      <link rel="stylesheet" href="${cssUrl}">
-    </head>
-    <body>
-      <div id="widget-iframe-root"></div>
-
-      <script src="${jsUrl}"></script>
-    </body>
-    </html>
-  `;
 }
 
 function getBaseUrl(): string {

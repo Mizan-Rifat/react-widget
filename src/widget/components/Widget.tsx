@@ -1,6 +1,30 @@
 import { useState } from 'react';
 
-const Widget = () => {
+interface WidgetConfig {
+  id: string;
+  organizationId: string;
+  name: string;
+  description: string;
+  bannerMessage: string;
+  launcherText: string;
+  formWithTicketFields: boolean;
+  formTitle: string;
+  submitButtonText: string;
+  confirmationMessage: string;
+  allowFileAttachments: boolean;
+  enableCaptcha: boolean;
+  widgetPosition: string;
+  bottomOffset: number;
+  horizontalOffset: number;
+  buttonColor: string;
+  buttonTextColor: string;
+  buttonShape: string;
+  embeddedCode: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const Widget = ({ config }: { config: WidgetConfig }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const isInIframe = window.self !== window.top;
@@ -25,6 +49,8 @@ const Widget = () => {
     }
   };
 
+  console.log({ configInWidget: config });
+
   return (
     <>
       {isOpen && (
@@ -42,7 +68,6 @@ const Widget = () => {
           </div>
         </>
       )}
-
       <button className='widget-button' onClick={toggleWidget}>
         Open Widget
       </button>

@@ -7,6 +7,7 @@ let isInitialized = false;
 let reactRoot: Root | null = null;
 
 // This script runs inside the iframe
+
 function initializeWidgetIframe() {
   try {
     // Prevent multiple initialization
@@ -17,12 +18,13 @@ function initializeWidgetIframe() {
 
     const root = document.getElementById('widget-iframe-root');
 
-    console.log({ root });
     if (!root) {
       throw new Error('Widget iframe root element not found');
     }
 
-    const component = <Widget />;
+    const config = (window as any).onedeskWidgetConfig;
+
+    const component = <Widget config={config} />;
 
     // Create root only once and store reference
     reactRoot = createRoot(root);
@@ -46,6 +48,16 @@ window.initializeWidgetIframe = initializeWidgetIframe;
 
 // Only initialize immediately if DOM is ready, otherwise let the load event handle it
 if (document.readyState === 'complete') {
-  initializeWidgetIframe();
+  window.addEventListener('message', (event) => {
+    if (event.data.type === 'WIDGET_CONFIG') {
+      const config = event.data.config;
+
+      (window as any).onedeskWidgetConfig = config;
+
+      if (config) {
+        initializeWidgetIframe();
+      }
+    }
+  });
 }
-initializeWidgetIframe();
+// initializeWidgetIframe();
