@@ -1,0 +1,19 @@
+@utility min-h-content {
+  min-height: var(--content-height);
+}
+
+@utility btn-label-hidden {
+  padding: var(--base-size-8) !important;
+
+  [data-component='leadingVisual'] {
+    margin-right: 0 !important;
+  }
+
+  [data-component='text'] {
+    display: none !important;
+  }
+}
+
+@utility border-border-attention-muted-40 {
+  border-color: #d4a72c66;
+}

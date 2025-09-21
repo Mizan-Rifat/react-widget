@@ -1,14 +1,9 @@
-import './App.css';
-import './widget/styles/style.css';
-
-import { WidgetContainer } from './widget/components/widget-container.tsx';
-import Widget from './widget/components/Widget.tsx';
+import WidgetContainer from './widget/components/WidgetContainer.tsx';
 
 function App() {
   return (
     <>
-      <Widget />
-      {/* <WidgetContainer clientKey={'test-key'} /> */}
+      <WidgetContainer clientKey={'test-key'} />
     </>
   );
 }

@@ -76,6 +76,9 @@ const commonPlugins = [
     inject: {
       insertAt: 'top',
     },
+    config: {
+      path: './postcss.config.mjs',
+    },
   }),
   commonjs(),
   nodePolyfills({

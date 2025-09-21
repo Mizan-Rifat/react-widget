@@ -1,0 +1,18 @@
+:root {
+  --sidenav-width: 48px;
+  --appbar-height: 48px;
+  --trial-banner-height: 48px;
+  --app-header-height: var(--appbar-height);
+  --breakpoint-xsmall: 375px;
+  --content-height: calc(100vh - var(--app-header-height));
+  .Toastify__toast-container {
+    --toastify-z-index: 10001;
+  }
+}
+
+[data-color-mode='light'][data-light-theme='light'] {
+  --button-primary-bgColor-rest: var(--button-outline-bgColor-hover);
+  --button-primary-bgColor-hover: #0b5ec0;
+  --button-primary-bgColor-active: #054ea3;
+  --button-primary-bgColor-disabled: #99c4f4;
+}

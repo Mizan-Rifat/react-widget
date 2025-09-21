@@ -1,0 +1,48 @@
+@reference "../app.css";
+
+.content {
+  min-height: calc(100vh - var(--app-header-height));
+  display: flex;
+  flex-direction: column;
+}
+
+.organizationFormControl {
+  display: none !important;
+  margin-right: var(--base-size-8);
+  width: 160px;
+  > span {
+    width: 100%;
+  }
+  @apply md:flex!;
+}
+
+.sidenav {
+  position: fixed;
+  bottom: 0;
+  top: var(--app-header-height);
+  width: var(--sidenav-width);
+  background-color: var(--bgColor-inset);
+  border-right: 1px solid var(--borderColor-default);
+  align-items: center;
+  flex-direction: column;
+  gap: var(--base-size-4);
+  padding: var(--base-size-8);
+  @apply hidden md:flex!;
+}
+
+.appbar {
+  position: fixed;
+  background-color: var(--bgColor-default);
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: var(--appbar-height);
+  width: 100%;
+  padding: var(--base-size-8) var(--base-size-16);
+}
+
+.settingsNavList {
+  [data-component='ActionList.Divider'] {
+    background: transparent;
+  }
+}

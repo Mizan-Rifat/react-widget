@@ -1,0 +1,77 @@
+.has-trial-banner {
+  --app-header-height: calc(var(--trial-banner-height) + var(--appbar-height));
+}
+
+.top-appheader {
+  top: var(--app-header-height);
+}
+
+.page-layout-pane-auto {
+  [class^='prc-PageLayout-Pane-'] {
+    width: auto !important;
+  }
+}
+.page-layout-pane-full {
+  [class^='prc-PageLayout-Pane-'] {
+    width: 100% !important;
+  }
+}
+
+#__primerPortalRoot__ {
+  z-index: 10000 !important;
+}
+
+.action-menu-icon-button {
+  [data-component='trailingAction'] {
+    display: none !important;
+  }
+}
+
+.TableHeader {
+  border-radius: 0 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  /* padding-bottom: var(--base-size-4) !important;
+  padding-top: var(--base-size-4) !important; */
+}
+
+.TableCell {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.TablePagination {
+  border-radius: 0 !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.TablePaginationPage {
+  padding: var(--base-size-8) !important;
+  /* padding-right: var(--base-size-8) !important; */
+}
+
+[role='dialog'] > * {
+  box-shadow: none;
+}
+
+.onedesk-blockquote {
+  @apply m-0! mt-4! border-l! border-border-default! pl-6!;
+  blockquote {
+    @apply border-l! m-0! border-border-default! pl-6!;
+  }
+}
+
+.dkim-table-container {
+  @apply border border-border-default rounded-2xl overflow-hidden;
+}
+
+.dkim-table-container .TableRow:last-child .TableCell {
+  border-bottom: none;
+}
+
+.form-disable {
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+}

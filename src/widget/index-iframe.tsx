@@ -1,6 +1,7 @@
 import { createRoot, type Root } from 'react-dom/client';
+import '../assets/css/app.css';
 import './styles/style.css';
-import Widget from './components/Widget';
+import InteractiveWidget from './components/InteractiveWidget';
 
 // Global variable to track if widget has been initialized
 let isInitialized = false;
@@ -24,7 +25,7 @@ function initializeWidgetIframe() {
 
     const config = (window as any).onedeskWidgetConfig;
 
-    const component = <Widget config={config} />;
+    const component = <InteractiveWidget config={config} />;
 
     // Create root only once and store reference
     reactRoot = createRoot(root);

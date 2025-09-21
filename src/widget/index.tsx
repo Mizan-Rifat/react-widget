@@ -1,3 +1,4 @@
+import '../assets/css/app.css';
 import './styles/style.css';
 
 const BASE_URL = getBaseUrl();
@@ -113,17 +114,6 @@ function getBaseUrl(): string {
     return `${url.protocol}//${url.host}`;
   }
   return window.location.origin;
-}
-
-function getClientKey() {
-  const script = document.currentScript as HTMLScriptElement;
-  const clientKey = script?.getAttribute('data-client-key');
-
-  if (!clientKey) {
-    throw new Error('Missing data-client-key attribute');
-  }
-
-  return clientKey;
 }
 
 initializeWidget();
