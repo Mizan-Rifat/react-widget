@@ -13,9 +13,11 @@ export default defineConfig({
     assetsDir: '',
     cssCodeSplit: true,
     rollupOptions: {
-      input: './src/test/test.ts',
+      input: {
+        widget: './src/widget/index.tsx',
+        'widget-iframe': './src/widget/index-iframe.tsx',
+      },
       output: {
-        // format: 'iife',
         entryFileNames: '[name].js',
         assetFileNames: '[name].css',
       },

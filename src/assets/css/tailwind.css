@@ -94,6 +94,7 @@
 
   --spacing: var(--base-size-4);
 
+  --shadow-resting-default: var(--shadow-resting-default);
   --shadow-resting-md: var(--shadow-resting-medium);
   --shadow-resting-sm: var(--shadow-resting-small);
   --shadow-resting-xs: var(--shadow-resting-xsmall);

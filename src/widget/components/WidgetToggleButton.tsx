@@ -18,9 +18,10 @@ const WidgetToggleButton = forwardRef<
       style={style}
       aria-label={config.launcherText}
       leadingVisual={<QuestionIcon fill={config.buttonTextColor} />}
-      variant="primary"
+      variant='primary'
       onClick={handleClick}
       ref={ref}
+      className='shadow-resting-default!'
     >
       {config.launcherText}
     </Button>
@@ -28,3 +29,4 @@ const WidgetToggleButton = forwardRef<
 });
 
 export default WidgetToggleButton;
+// 42v 412 30

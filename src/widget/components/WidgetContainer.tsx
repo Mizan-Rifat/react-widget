@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { WidgetContext } from '../lib/context';
 import { ThemeProvider } from '@primer/react';
 import customTheme from '../../theme/theme';
 import { BaseStyles } from '@primer/react';
@@ -8,7 +6,7 @@ import InteractiveWidget from './InteractiveWidget';
 import { WidgetConfig } from './InteractiveWidget';
 
 interface WidgetContainerProps {
-  clientKey: string;
+  config?: WidgetConfig;
 }
 
 const defaultConfig: WidgetConfig = {
@@ -33,26 +31,11 @@ const defaultConfig: WidgetConfig = {
   embeddedCode: 'd',
 };
 
-const WidgetContainer = ({ clientKey }: WidgetContainerProps) => {
-  const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
-
+const WidgetContainer = ({ config }: WidgetContainerProps) => {
   return (
     <ThemeProvider theme={customTheme}>
       <BaseStyles>
-        <WidgetContext.Provider value={{ isOpen, setIsOpen, clientKey }}>
-          <div className='p-8'>
-            <InteractiveWidget config={defaultConfig} />
-          </div>
-        </WidgetContext.Provider>
+        <InteractiveWidget config={config || defaultConfig} />
       </BaseStyles>
     </ThemeProvider>
   );

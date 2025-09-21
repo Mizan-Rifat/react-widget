@@ -92,9 +92,13 @@ const InteractiveWidget = ({ config }: InteractiveWidgetProps) => {
                   : '0px',
             boxShadow:
               '0px 4px 16px rgba(37, 41, 46, 0.12), 0px 0px 1px 0px rgba(209, 217, 224, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            // display: 'flex',
+            // alignItems: 'center',
+            // justifyContent: 'center',
+            alignSelf:
+              config.widgetPosition === 'bottomLeft'
+                ? 'flex-start'
+                : 'flex-end',
           }}
           ref={buttonRef}
           config={config}

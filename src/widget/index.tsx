@@ -30,8 +30,8 @@ async function onReady() {
       }
       if (event.data.type === 'WIDGET_OPEN') {
         document.documentElement.classList.add('onedesk-widget-open');
-        container.style.height = '500px';
-        container.style.width = '400px';
+        container.style.height = '800px';
+        container.style.width = '412px';
       }
 
       console.log('Message received:', event.data);
@@ -46,12 +46,13 @@ const createContainer = (config: any) => {
   container.id = 'onedesk-widget-container';
   container.style.cssText = `
     position: fixed;    
-    bottom: 0;
-    ${config.widgetPosition === 'bottomRight' ? 'right: 0;' : 'left: 0;'};
-    width: 400px;
-    height: 500px;
+    width: 412px;
+    height: 800px;
     border: none;
     z-index: 9999;
+    left: ${config.widgetPosition === 'bottomLeft' ? config.horizontalOffset + 'px' : 'auto'};
+    right: ${config.widgetPosition === 'bottomRight' ? config.horizontalOffset + 'px' : 'auto'};
+    bottom: ${config.bottomOffset}px;
   `;
 
   return container;

@@ -1,7 +1,6 @@
-/* @import './primer.css'; */
-@import 'tailwindcss';
-/* @import './variables.css';
+@import './primer.css';
+@import './variables.css';
 @import './tailwind.css';
 @import './utilities.css';
 @import './components.css';
-@import './custom-classes.css'; */
+@import './custom-classes.css';

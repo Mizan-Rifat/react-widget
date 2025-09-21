@@ -22,15 +22,15 @@ const WidgetOverlayContent = ({
           'rounded-2xl border-border-default w-full max-h-[625px] overflow-scroll',
           className,
         )}
-        style={{
-          boxShadow: `
-            0px 48px 96px -24px rgba(37, 41, 46, 0.08),
-            0px 24px 48px -12px rgba(37, 41, 46, 0.08),
-            0px 4px 32px -4px rgba(37, 41, 46, 0.08),
-            0px 8px 16px -4px rgba(37, 41, 46, 0.08),
-            0px 0px 1px 0px rgba(209, 217, 224, 0.5)
-          `,
-        }}
+        // style={{
+        //   boxShadow: `
+        //     0px 48px 96px -24px rgba(37, 41, 46, 0.08),
+        //     0px 24px 48px -12px rgba(37, 41, 46, 0.08),
+        //     0px 4px 32px -4px rgba(37, 41, 46, 0.08),
+        //     0px 8px 16px -4px rgba(37, 41, 46, 0.08),
+        //     0px 0px 1px 0px rgba(209, 217, 224, 0.5)
+        //   `,
+        // }}
       >
         <div className='flex justify-between pl-6 pr-4 pt-6 rounded-t-2xl'>
           <div>
