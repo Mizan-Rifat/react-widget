@@ -1,6 +1,3 @@
-import '../assets/css/app.css';
-import './styles/style.css';
-
 const BASE_URL = getBaseUrl();
 
 function initializeWidget() {

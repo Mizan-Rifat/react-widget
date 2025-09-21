@@ -1,7 +1,6 @@
 import { createRoot, type Root } from 'react-dom/client';
-import '../assets/css/app.css';
-import './styles/style.css';
 import InteractiveWidget from './components/InteractiveWidget';
+import '../assets/css/app.css';
 
 // Global variable to track if widget has been initialized
 let isInitialized = false;

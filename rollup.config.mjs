@@ -51,7 +51,7 @@ const commonPlugins = [
     tsconfig: './tsconfig.json',
   }),
   nodeResolve({
-    extensions: ['.tsx', '.ts', '.json', '.js', '.jsx', '.mjs'],
+    extensions: ['.tsx', '.ts', '.json', '.js', '.jsx', '.mjs', '.css'],
     browser: true,
     dedupe: ['react', 'react-dom'],
   }),
@@ -76,9 +76,6 @@ const commonPlugins = [
     inject: {
       insertAt: 'top',
     },
-    config: {
-      path: './postcss.config.mjs',
-    },
   }),
   commonjs(),
   nodePolyfills({
@@ -101,34 +98,42 @@ const commonPlugins = [
 
 export default [
   // Main widget bundle (for parent page)
+  // {
+  //   input: './src/widget/index.tsx',
+  //   output: {
+  //     file: `dist/${fileName}`,
+  //     format: 'iife',
+  //     sourcemap: false,
+  //     inlineDynamicImports: true,
+  //     globals: {
+  //       'react/jsx-runtime': 'jsxRuntime',
+  //       'react-dom/client': 'ReactDOM',
+  //       react: 'React',
+  //     },
+  //   },
+  //   plugins: commonPlugins,
+  // },
+  // // Iframe widget bundle
+  // {
+  //   input: './src/widget/index-iframe.tsx',
+  //   output: {
+  //     file: `dist/${iframeFileName}`,
+  //     format: 'iife',
+  //     sourcemap: false,
+  //     inlineDynamicImports: true,
+  //     globals: {
+  //       'react/jsx-runtime': 'jsxRuntime',
+  //       'react-dom/client': 'ReactDOM',
+  //       react: 'React',
+  //     },
+  //   },
+  //   plugins: commonPlugins,
+  // },
   {
-    input: './src/widget/index.tsx',
+    input: './src/test/test.tsx',
     output: {
-      file: `dist/${fileName}`,
+      file: `dist/test.js`,
       format: 'iife',
-      sourcemap: false,
-      inlineDynamicImports: true,
-      globals: {
-        'react/jsx-runtime': 'jsxRuntime',
-        'react-dom/client': 'ReactDOM',
-        react: 'React',
-      },
-    },
-    plugins: commonPlugins,
-  },
-  // Iframe widget bundle
-  {
-    input: './src/widget/index-iframe.tsx',
-    output: {
-      file: `dist/${iframeFileName}`,
-      format: 'iife',
-      sourcemap: false,
-      inlineDynamicImports: true,
-      globals: {
-        'react/jsx-runtime': 'jsxRuntime',
-        'react-dom/client': 'ReactDOM',
-        react: 'React',
-      },
     },
     plugins: commonPlugins,
   },

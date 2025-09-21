@@ -1,0 +1,4 @@
+@import 'tailwindcss';
+.test {
+  @apply bg-red-500 flex justify-center items-center h-screen w-screen;
+}
