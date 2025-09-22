@@ -1,20 +1,18 @@
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 
-// https://vite.dev/config/
+// Production-optimized configuration for maximum tree shaking and minimal bundle size
 export default defineConfig({
-  plugins: [
-    // react(),
-    tailwindcss(),
-  ],
+  plugins: [tailwindcss()],
   build: {
     outDir: 'dist',
     sourcemap: false,
     assetsDir: '',
     minify: 'terser',
-    cssCodeSplit: true,
-    cssMinify: true,
+    cssCodeSplit: false, // Inline CSS for widgets
+    cssMinify: 'esbuild',
     target: 'es2020',
+    lib: false,
     rollupOptions: {
       input: {
         widget: './src/widget/index.tsx',
@@ -23,15 +21,21 @@ export default defineConfig({
       output: {
         entryFileNames: '[name].js',
         assetFileNames: '[name].css',
-        manualChunks: undefined, // Disable chunk splitting for widgets
+        manualChunks: undefined,
         compact: true,
+        generatedCode: {
+          arrowFunctions: true,
+          constBindings: true,
+          objectShorthand: true,
+        },
       },
       treeshake: {
         moduleSideEffects: false,
         propertyReadSideEffects: false,
         tryCatchDeoptimization: false,
+        preset: 'smallest',
       },
-      external: [], // Bundle everything for standalone widget
+      external: [],
     },
     terserOptions: {
       ecma: 2020,
@@ -47,7 +51,7 @@ export default defineConfig({
         conditionals: true,
         dead_code: true,
         directives: true,
-        drop_console: true, // Remove console logs in production
+        drop_console: true,
         drop_debugger: true,
         evaluate: true,
         expression: true,
@@ -61,13 +65,17 @@ export default defineConfig({
         loops: true,
         module: true,
         negate_iife: true,
-        passes: 3, // Multiple passes for better optimization
+        passes: 5, // More passes for maximum optimization
         properties: true,
         pure_funcs: [
           'console.log',
           'console.info',
           'console.debug',
           'console.warn',
+          'console.error',
+          'console.trace',
+          'console.time',
+          'console.timeEnd',
         ],
         pure_getters: true,
         reduce_funcs: true,
@@ -100,10 +108,11 @@ export default defineConfig({
       format: {
         comments: false,
         ecma: 2020,
+        ascii_only: true,
       },
     },
     reportCompressedSize: true,
-    chunkSizeWarningLimit: 500, // Warn if chunks exceed 500KB
+    chunkSizeWarningLimit: 300, // Stricter limit for widgets
   },
   esbuild: {
     legalComments: 'none',
@@ -112,10 +121,16 @@ export default defineConfig({
     minifySyntax: true,
     minifyWhitespace: true,
     drop: ['console', 'debugger'],
+    target: 'es2020',
   },
   define: {
-    // Remove development-only code
     __DEV__: false,
     'process.env.NODE_ENV': '"production"',
+    'import.meta.env.DEV': false,
+    'import.meta.env.PROD': true,
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+    exclude: [],
   },
 });

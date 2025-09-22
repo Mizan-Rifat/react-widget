@@ -1,6 +1,3 @@
-import { ThemeProvider } from '@primer/react';
-import customTheme from '../../theme/theme';
-import { BaseStyles } from '@primer/react';
 import '../../assets/css/app.css';
 import InteractiveWidget from './InteractiveWidget';
 import { WidgetConfig } from './InteractiveWidget';
@@ -33,12 +30,13 @@ const defaultConfig: WidgetConfig = {
 
 const WidgetContainer = ({ config }: WidgetContainerProps) => {
   return (
-    <ThemeProvider theme={customTheme}>
-      <BaseStyles>
-        <InteractiveWidget config={config || defaultConfig} />
-      </BaseStyles>
-    </ThemeProvider>
+    <div>
+      <InteractiveWidget config={config || defaultConfig} />
+    </div>
   );
 };
 
 export default WidgetContainer;
+
+// Named export for better tree shaking
+export { WidgetContainer };

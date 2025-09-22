@@ -1,8 +1,5 @@
-import { Heading, IconButton, Text } from '@primer/react';
-import { XIcon } from '@primer/octicons-react';
 import WidgetContentForm from './WidgetContentForm';
 import { WidgetConfig } from './InteractiveWidget';
-import classNames from 'classnames';
 
 interface WidgetOverlayContentProps {
   config: WidgetConfig;
@@ -18,10 +15,7 @@ const WidgetOverlayContent = ({
   return (
     <div className='max-w-[375px] w-full '>
       <div
-        className={classNames(
-          'rounded-2xl border-border-default w-full max-h-[625px] overflow-scroll',
-          className,
-        )}
+        className={`rounded-2xl border-border-default w-full max-h-[625px] overflow-scroll ${className || ''}`}
         // style={{
         //   boxShadow: `
         //     0px 48px 96px -24px rgba(37, 41, 46, 0.08),
@@ -34,27 +28,51 @@ const WidgetOverlayContent = ({
       >
         <div className='flex justify-between pl-6 pr-4 pt-6 rounded-t-2xl'>
           <div>
-            <Heading variant='medium'>{config.bannerMessage}</Heading>
-            <Text variant='medium' color='fg.muted'>
+            <h2
+              style={{
+                fontSize: '18px',
+                fontWeight: '600',
+                margin: '0 0 4px 0',
+              }}
+            >
+              {config.bannerMessage}
+            </h2>
+            <p style={{ fontSize: '14px', color: '#656d76', margin: '0' }}>
               {config.formTitle}
-            </Text>
+            </p>
           </div>
-          <IconButton
-            variant='invisible'
+          <button
+            style={{
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '4px',
+            }}
             aria-label='Close'
-            icon={XIcon}
             onClick={handleClose}
-          />
+          >
+            <svg
+              width='16'
+              height='16'
+              viewBox='0 0 16 16'
+              fill='currentColor'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z' />
+            </svg>
+          </button>
         </div>
 
         <WidgetContentForm config={config} />
 
         <div className='rounded-b-2xl w-full'>
-          <Text
+          <p
             className='text-center mb-2 -mt-1'
-            size='small'
-            as='p'
-            color='fg.muted'
+            style={{ fontSize: '12px', color: '#656d76', margin: '0 0 8px 0' }}
           >
             Powered by
             <img
@@ -64,7 +82,7 @@ const WidgetOverlayContent = ({
               }
               alt='logo'
             />
-          </Text>
+          </p>
         </div>
       </div>
     </div>
@@ -72,3 +90,6 @@ const WidgetOverlayContent = ({
 };
 
 export default WidgetOverlayContent;
+
+// Named export for better tree shaking
+export { WidgetOverlayContent };

@@ -1,7 +1,6 @@
 import WidgetToggleButton from './WidgetToggleButton';
 import WidgetOverlay from './WidgetOverlay';
-import { useEffect, useRef, useState } from 'react';
-import { registerPortalRoot } from '@primer/react';
+import { useRef, useState } from 'react';
 
 export interface WidgetConfig {
   id: string;
@@ -47,11 +46,6 @@ const InteractiveWidget = ({ config }: InteractiveWidgetProps) => {
   };
 
   const exampleBoxRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (exampleBoxRef.current) {
-      registerPortalRoot(exampleBoxRef.current, 'onedesk-widget-overlay');
-    }
-  }, [exampleBoxRef]);
 
   return (
     <div
@@ -109,3 +103,6 @@ const InteractiveWidget = ({ config }: InteractiveWidgetProps) => {
 };
 
 export default InteractiveWidget;
+
+// Named export for better tree shaking
+export { InteractiveWidget };
