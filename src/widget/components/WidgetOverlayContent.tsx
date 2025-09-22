@@ -13,9 +13,9 @@ const WidgetOverlayContent = ({
   handleClose,
 }: WidgetOverlayContentProps) => {
   return (
-    <div className='max-w-[375px] w-full '>
+    <div className='w-[400px]'>
       <div
-        className={`rounded-2xl border-border-default w-full max-h-[625px] overflow-scroll ${className || ''}`}
+        className={`rounded-2xl border border-border-default w-full max-h-[625px] overflow-scroll ${className || ''}`}
         // style={{
         //   boxShadow: `
         //     0px 48px 96px -24px rgba(37, 41, 46, 0.08),
@@ -26,18 +26,12 @@ const WidgetOverlayContent = ({
         //   `,
         // }}
       >
-        <div className='flex justify-between pl-6 pr-4 pt-6 rounded-t-2xl'>
+        <div className='flex justify-between pl-6 pr-4 pt-6 rounded-t-2xl text-fg-default'>
           <div>
-            <h2
-              style={{
-                fontSize: '18px',
-                fontWeight: '600',
-                margin: '0 0 4px 0',
-              }}
-            >
+            <h2 className='text-xl leading-8 font-semibold'>
               {config.bannerMessage}
             </h2>
-            <p style={{ fontSize: '14px', color: '#656d76', margin: '0' }}>
+            <p className='text-base leading-6 text-fg-muted'>
               {config.formTitle}
             </p>
           </div>

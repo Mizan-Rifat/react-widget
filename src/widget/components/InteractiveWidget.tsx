@@ -1,6 +1,6 @@
 import WidgetToggleButton from './WidgetToggleButton';
 import WidgetOverlay from './WidgetOverlay';
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'preact/hooks';
 
 export interface WidgetConfig {
   id: string;

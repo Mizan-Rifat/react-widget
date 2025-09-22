@@ -1,12 +1,12 @@
 import WidgetOverlayContent from './WidgetOverlayContent';
 import { WidgetConfig } from './InteractiveWidget';
-import { useEffect } from 'react';
+import { useEffect } from 'preact/hooks';
 
 interface WidgetOverlayProps {
   config: WidgetConfig;
   isOpen: boolean;
   handleClose: () => void;
-  buttonRef: React.RefObject<HTMLButtonElement>;
+  buttonRef: preact.RefObject<HTMLButtonElement>;
   left?: number;
   right?: number;
 }
@@ -53,24 +53,24 @@ const WidgetOverlay = ({
   if (!isOpen) return null;
 
   return (
-    <div
-      data-widget-overlay
-      style={{
-        position: 'absolute',
-        bottom: '40px',
-        left: left !== undefined ? `${left}px` : undefined,
-        right: right !== undefined ? `${right}px` : undefined,
-        zIndex: 1001,
-        boxShadow:
-          '0px 8px 24px rgba(37, 41, 46, 0.12), 0px 0px 1px rgba(209, 217, 224, 0.5)',
-        borderRadius: '16px',
-        backgroundColor: 'white',
-        border: 'none',
-      }}
-      className='rounded-2xl! border-none! shadow-floating-md!'
-    >
-      <WidgetOverlayContent config={config} handleClose={handleClose} />
-    </div>
+    // <div
+    //   data-widget-overlay
+    //   style={{
+    //     position: 'absolute',
+    //     bottom: '40px',
+    //     left: left !== undefined ? `${left}px` : undefined,
+    //     right: right !== undefined ? `${right}px` : undefined,
+    //     zIndex: 1001,
+    //     boxShadow:
+    //       '0px 8px 24px rgba(37, 41, 46, 0.12), 0px 0px 1px rgba(209, 217, 224, 0.5)',
+    //     borderRadius: '16px',
+    //     backgroundColor: 'white',
+    //     border: 'none',
+    //   }}
+    //   className='rounded-2xl! border-none! shadow-floating-md!'
+    // >
+    <WidgetOverlayContent config={config} handleClose={handleClose} />
+    // </div>
   );
 };
 

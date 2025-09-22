@@ -1,7 +1,13 @@
-import { theme } from '@primer/react';
 import deepmerge from 'deepmerge';
 
-const customTheme = deepmerge(theme, {
+// Basic theme object since @primer/react is no longer available
+const baseTheme = {
+  fonts: {
+    mono: 'ui-monospace, SFMono-Regular, "SF Mono", monospace',
+  },
+};
+
+const customTheme = deepmerge(baseTheme, {
   fonts: {
     mono: 'MonoLisa, monospace',
   },

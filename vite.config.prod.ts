@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
+import preact from '@preact/preset-vite';
 import tailwindcss from '@tailwindcss/vite';
 
 // Production-optimized configuration for maximum tree shaking and minimal bundle size
 export default defineConfig({
-  plugins: [tailwindcss()],
+  plugins: [preact(), tailwindcss()],
   build: {
     outDir: 'dist',
     sourcemap: false,
@@ -130,7 +131,7 @@ export default defineConfig({
     'import.meta.env.PROD': true,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom'],
+    include: ['preact'],
     exclude: [],
   },
 });

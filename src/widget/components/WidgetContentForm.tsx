@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'preact/hooks';
 import { WidgetConfig } from './InteractiveWidget';
 
 interface WidgetContentFormProps {
@@ -70,9 +70,12 @@ const WidgetContentForm = ({ config }: WidgetContentFormProps) => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const files = Array.from(e.target.files);
+  const handleFileChange = (
+    e: preact.JSX.TargetedEvent<HTMLInputElement, Event>,
+  ) => {
+    const target = e.target as HTMLInputElement;
+    if (!target.files) return;
+    const files = Array.from(target.files);
     const validFiles = files.filter(
       (file) =>
         ['image/png', 'image/jpeg', 'image/gif', 'video/mp4'].includes(
@@ -83,14 +86,16 @@ const WidgetContentForm = ({ config }: WidgetContentFormProps) => {
       const all = [...prev, ...validFiles].slice(0, 3);
       return all;
     });
-    e.target.value = '';
+    target.value = '';
   };
 
   const handleRemove = (idx: number) => {
     setAttachments((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (
+    e: preact.JSX.TargetedEvent<HTMLFormElement, Event>,
+  ) => {
     e.preventDefault();
 
     // Validate form
@@ -156,7 +161,9 @@ const WidgetContentForm = ({ config }: WidgetContentFormProps) => {
             type='email'
             placeholder='Your email address'
             value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
+            onChange={(e) =>
+              handleInputChange('email', (e.target as HTMLInputElement).value)
+            }
             style={errors.email ? errorInputStyle : inputStyle}
           />
           {errors.email && <div style={errorStyle}>{errors.email}</div>}
@@ -170,7 +177,9 @@ const WidgetContentForm = ({ config }: WidgetContentFormProps) => {
             type='text'
             placeholder='Subject'
             value={formData.subject}
-            onChange={(e) => handleInputChange('subject', e.target.value)}
+            onChange={(e) =>
+              handleInputChange('subject', (e.target as HTMLInputElement).value)
+            }
             style={errors.subject ? errorInputStyle : inputStyle}
           />
           {errors.subject && <div style={errorStyle}>{errors.subject}</div>}
@@ -183,7 +192,12 @@ const WidgetContentForm = ({ config }: WidgetContentFormProps) => {
           <textarea
             placeholder='Your message'
             value={formData.message}
-            onChange={(e) => handleInputChange('message', e.target.value)}
+            onChange={(e) =>
+              handleInputChange(
+                'message',
+                (e.target as HTMLTextAreaElement).value,
+              )
+            }
             style={{
               ...(errors.message ? errorInputStyle : inputStyle),
               minHeight: '80px',
@@ -201,7 +215,10 @@ const WidgetContentForm = ({ config }: WidgetContentFormProps) => {
             <select
               value={formData.ticketFieldId || ''}
               onChange={(e) =>
-                handleInputChange('ticketFieldId', e.target.value)
+                handleInputChange(
+                  'ticketFieldId',
+                  (e.target as HTMLSelectElement).value,
+                )
               }
               style={inputStyle}
             >

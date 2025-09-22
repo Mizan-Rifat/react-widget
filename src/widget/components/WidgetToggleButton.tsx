@@ -1,9 +1,9 @@
 import { WidgetConfig } from './InteractiveWidget';
-import { forwardRef } from 'react';
+import { forwardRef } from 'preact/compat';
 
 interface WidgetToggleButtonProps {
   handleClick?: () => void;
-  style?: React.CSSProperties;
+  style?: preact.JSX.CSSProperties;
   config: WidgetConfig;
 }
 

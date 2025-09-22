@@ -1,10 +1,9 @@
-import { createRoot, type Root } from 'react-dom/client';
+import { render } from 'preact';
 import '../assets/css/app.css';
 import WidgetContainer from './components/WidgetContainer';
 
 // Global variable to track if widget has been initialized
 let isInitialized = false;
-let reactRoot: Root | null = null;
 
 // This script runs inside the iframe
 
@@ -30,9 +29,8 @@ function initializeWidgetIframe() {
       />
     );
 
-    // Create root only once and store reference
-    reactRoot = createRoot(root);
-    reactRoot.render(component);
+    // Render component with Preact
+    render(component, root);
 
     isInitialized = true;
     console.log('Widget iframe initialized successfully');

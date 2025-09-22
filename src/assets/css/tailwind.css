@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import 'tailwindcss';
+
 @theme inline {
   --color-*: initial;
   --color-fg-accent: var(--fgColor-accent);
@@ -6,11 +8,11 @@
   --color-fg-black: var(--fgColor-black);
   --color-fg-closed: var(--fgColor-closed);
   --color-fg-danger: var(--fgColor-danger);
-  --color-fg-default: var(--fgColor-default);
+  --color-fg-default: #1f2328;
   --color-fg-disabled: var(--fgColor-disabled);
   --color-fg-done: var(--fgColor-done);
   --color-fg-link: var(--fgColor-link);
-  --color-fg-muted: var(--fgColor-muted);
+  --color-fg-muted: #59636e;
   --color-fg-neutral: var(--fgColor-neutral);
   --color-fg-onEmphasis: var(--fgColor-onEmphasis);
   --color-fg-onInverse: var(--fgColor-onInverse);
@@ -59,7 +61,7 @@
   --color-border-closed-muted: var(--borderColor-closed-muted);
   --color-border-danger-emphasis: var(--borderColor-danger-emphasis);
   --color-border-danger-muted: var(--borderColor-danger-muted);
-  --color-border-default: var(--borderColor-default);
+  --color-border-default: #d1d9e0;
   --color-border-disabled: var(--borderColor-disabled);
   --color-border-done-emphasis: var(--borderColor-done-emphasis);
   --color-border-done-muted: var(--borderColor-done-muted);
@@ -84,6 +86,8 @@
   --color-bg-overlay: var(--overlay-bgColor);
   --color-border-overlay: var(--overlay-borderColor);
 
+  --font-sans: 'Roboto', sans-serif;
+
   --breakpoint-*: initial;
   --breakpoint-xs: 375px;
   --breakpoint-sm: 544px;
@@ -92,7 +96,7 @@
   --breakpoint-xl: 1280px;
   --breakpoint-xxl: 1400px;
 
-  --spacing: var(--base-size-4);
+  /* --spacing: var(--base-size-4); */
 
   --shadow-resting-default: var(--shadow-resting-default);
   --shadow-resting-md: var(--shadow-resting-medium);
