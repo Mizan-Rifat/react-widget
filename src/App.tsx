@@ -1,9 +1,9 @@
-import WidgetContainer from './widget/components/WidgetContainer.tsx';
+import InteractiveWidget from './widget/components/InteractiveWidget.tsx';
 
 function App() {
   return (
     <>
-      <WidgetContainer />
+      <InteractiveWidget />
     </>
   );
 }

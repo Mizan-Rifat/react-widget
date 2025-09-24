@@ -1,6 +1,0 @@
-@reference "../app.css";
-.ambMaxW320 > [data-component='buttonContent'] {
-  max-width: 296px;
-  overflow: hidden;
-  @apply sm:max-w-md md:max-w-full!;
-}

@@ -1,6 +1,6 @@
 import { render } from 'preact';
 import '../assets/css/app.css';
-import WidgetContainer from './components/WidgetContainer';
+import InteractiveWidget from './components/InteractiveWidget';
 
 // Global variable to track if widget has been initialized
 let isInitialized = false;
@@ -24,7 +24,7 @@ function initializeWidgetIframe() {
     const config = (window as any).onedeskWidgetConfig;
 
     const component = (
-      <WidgetContainer
+      <InteractiveWidget
         config={{ ...config, bottomOffset: 0, horizontalOffset: 0 }}
       />
     );

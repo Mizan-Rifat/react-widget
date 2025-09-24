@@ -1,6 +1,29 @@
+import '../../assets/css/app.css';
 import WidgetToggleButton from './WidgetToggleButton';
 import WidgetOverlay from './WidgetOverlay';
-import { useRef, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
+
+const defaultConfig: WidgetConfig = {
+  id: '01995b18-9605-7e42-8221-997b89416bc7',
+  organizationId: '70cee37c-c4b0-4159-ad3a-18b7224a5045',
+  name: 'HELLO',
+  description: 'ASASA',
+  bannerMessage: 'Welcome to example support',
+  launcherText: 'Help',
+  formWithTicketFields: true,
+  formTitle: 'Feel free to ask anything',
+  submitButtonText: 'Send',
+  confirmationMessage: 'Your message has been sent',
+  allowFileAttachments: true,
+  enableCaptcha: false,
+  widgetPosition: 'bottomRight',
+  bottomOffset: 32,
+  horizontalOffset: 32,
+  buttonColor: '#1A7F37',
+  buttonTextColor: '#FFFFFF',
+  buttonShape: 'rounded',
+  embeddedCode: 'd',
+};
 
 export interface WidgetConfig {
   id: string;
@@ -25,19 +48,19 @@ export interface WidgetConfig {
 }
 
 interface InteractiveWidgetProps {
-  config: WidgetConfig;
+  config?: WidgetConfig;
 }
 
-const InteractiveWidget = ({ config }: InteractiveWidgetProps) => {
+const InteractiveWidget = ({
+  config = defaultConfig,
+}: InteractiveWidgetProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const isInIframe = window.self !== window.top;
 
   const toggleWidget = () => {
     setIsOpen(!isOpen);
     if (isInIframe && window.parent) {
-      console.log('Sending message to parent');
       window.parent.postMessage(
         { type: isOpen ? 'WIDGET_CLOSE' : 'WIDGET_OPEN' },
         '*',
@@ -45,60 +68,41 @@ const InteractiveWidget = ({ config }: InteractiveWidgetProps) => {
     }
   };
 
-  const exampleBoxRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    window.addEventListener('message', (event) => {
+      console.log({ event });
+    });
+  }, []);
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: config.bottomOffset,
-        left:
-          config.widgetPosition === 'bottomLeft'
-            ? config.horizontalOffset
-            : 'auto',
-        right:
-          config.widgetPosition === 'bottomRight'
-            ? config.horizontalOffset
-            : 'auto',
-        zIndex: 1000,
-      }}
-    >
-      <div className='flex flex-col' ref={exampleBoxRef}>
-        <WidgetOverlay
-          isOpen={isOpen}
-          handleClose={() => setIsOpen(false)}
-          buttonRef={buttonRef}
-          left={config.widgetPosition === 'bottomLeft' ? 0 : undefined}
-          right={config.widgetPosition === 'bottomRight' ? 0 : undefined}
-          config={config}
-        />
+    <>
+      <WidgetOverlay
+        isOpen={isOpen}
+        handleClose={toggleWidget}
+        left={config.widgetPosition === 'bottomLeft' ? 0 : undefined}
+        right={config.widgetPosition === 'bottomRight' ? 0 : undefined}
+        config={config}
+      />
 
-        <WidgetToggleButton
-          handleClick={toggleWidget}
-          style={{
-            background: config.buttonColor,
-            color: config.buttonTextColor,
-            borderRadius:
-              config.buttonShape === 'rounded'
-                ? '8px'
-                : config.buttonShape === 'pill'
-                  ? '9999px'
-                  : '0px',
-            boxShadow:
-              '0px 4px 16px rgba(37, 41, 46, 0.12), 0px 0px 1px 0px rgba(209, 217, 224, 0.5)',
-            // display: 'flex',
-            // alignItems: 'center',
-            // justifyContent: 'center',
-            alignSelf:
-              config.widgetPosition === 'bottomLeft'
-                ? 'flex-start'
-                : 'flex-end',
-          }}
-          ref={buttonRef}
-          config={config}
-        />
-      </div>
-    </div>
+      <WidgetToggleButton
+        handleClick={toggleWidget}
+        style={{
+          background: isOpen ? 'white' : config.buttonColor,
+          color: config.buttonTextColor,
+          borderRadius:
+            config.buttonShape === 'rounded'
+              ? '8px'
+              : config.buttonShape === 'pill'
+                ? '9999px'
+                : '0px',
+          boxShadow:
+            '0px 4px 16px rgba(37, 41, 46, 0.12), 0px 0px 1px 0px rgba(209, 217, 224, 0.5)',
+          alignSelf:
+            config.widgetPosition === 'bottomLeft' ? 'flex-start' : 'flex-end',
+        }}
+        config={config}
+      />
+    </>
   );
 };
 

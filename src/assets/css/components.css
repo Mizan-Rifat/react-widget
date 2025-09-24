@@ -1,77 +1,13 @@
 @layer components {
-  .letter-avatar {
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px var(--avatar-borderColor, var(--color-avatar-border));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: var(--avatarSize);
-    overflow: hidden;
-    vertical-align: middle;
-    width: var(--avatarSize);
-  }
-
-  .simplebar {
-    height: 100%;
-    .simplebar-content {
-      height: 100%;
+  .scrollbar-track {
+    background: transparent !important;
+    .scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2) !important;
     }
   }
 
-  .btn-select {
-    @apply bg-bg-default! shadow-inset!;
-    [data-component='buttonContent'] {
-      @apply flex-none!;
-    }
-  }
-
-  .action-list-item-checkbox {
-    span {
-      @apply flex! gap-2!;
-    }
-  }
-
-  .label-muted {
-    @apply bg-bg-muted! border-none!;
-  }
-
-  .label-group {
-    li {
-      min-height: unset !important;
-    }
-  }
-
-  .tiptap-container {
-    .tiptap-menu-bar {
-      &.tiptap-note {
-        @apply bg-bg-attention-muted! border-border-attention-muted-40!;
-      }
-    }
-    .tiptap {
-      min-height: 188px;
-      @apply bg-bg-default;
-      &.tiptap-note {
-        @apply bg-bg-attention-muted! border-b border-border-attention-muted-40!;
-      }
-      .details {
-        > button {
-          display: none;
-        }
-      }
-    }
-  }
-
-  .quoted-text-token {
-    > div {
-      @apply mr-0!;
-      svg {
-        @apply h-2! w-3!;
-      }
-    }
-  }
-
-  .tickets-updated-alert {
-    --toastify-toast-min-height: 48px;
-    --toastify-toast-width: 280px;
+  .widget-button {
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+    transform-origin: bottom right;
   }
 }

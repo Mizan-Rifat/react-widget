@@ -13,22 +13,11 @@ const WidgetToggleButton = forwardRef<
 >(({ handleClick, style, config }, ref) => {
   return (
     <button
-      style={{
-        ...style,
-        border: 'none',
-        padding: '12px 16px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        fontSize: '14px',
-        fontWeight: '500',
-        outline: 'none',
-      }}
+      style={style}
       aria-label={config.launcherText}
       onClick={handleClick}
       ref={ref}
-      className='shadow-resting-default!'
+      className='flex items-center justify-center gap-2 shadow-resting-default! px-3 h-8 cursor-pointer text-sm leading-5 font-semibold widget-button'
     >
       <svg
         width='16'

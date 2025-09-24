@@ -1,3 +1,5 @@
+import './styles/style.css';
+
 const BASE_URL = getBaseUrl();
 
 function initializeWidget() {
@@ -13,25 +15,59 @@ async function onReady() {
     const res = await fetch(`${BASE_URL}/widget.json`);
     const config = await res.json();
 
-    (window as any).onedeskWidgetConfig = config;
-
-    console.log({ config });
+    // (window as any).onedeskWidgetConfig = config;
+    // (window as any).test = 'test';
 
     const container = createContainer(config);
     document.body.appendChild(container);
 
-    createWidgetIframe(container, config);
+    addCss();
+
+    const iframe = createWidgetIframe(container, config);
+
+    const OneDeskWidget = {
+      hideLauncher: () => {
+        iframe.contentWindow?.postMessage(
+          { type: 'WIDGET_LAUNCHER', hide: true },
+          '*',
+        );
+      },
+      showLauncher: () => {
+        iframe.contentWindow?.postMessage(
+          { type: 'WIDGET_LAUNCHER', hide: false },
+          '*',
+        );
+      },
+      open: () => {
+        iframe.contentWindow?.postMessage(
+          { type: 'WIDGET_OVERLAY', open: true },
+          '*',
+        );
+      },
+      close: () => {
+        iframe.contentWindow?.postMessage(
+          { type: 'WIDGET_OVERLAY', open: false },
+          '*',
+        );
+      },
+      // Helper method to access test variable
+      getTestVariable: () => {
+        return (window as any).test;
+      },
+    };
+
+    (window as any).OneDeskWidget = OneDeskWidget;
+
     window.addEventListener('message', function (event) {
+      console.log({ event });
+
       if (event.data.type === 'WIDGET_CLOSE') {
         document.documentElement.classList.remove('onedesk-widget-open');
-
-        container.style.height = '65px';
-        container.style.width = '150px';
+        container.classList.remove('expanded');
       }
       if (event.data.type === 'WIDGET_OPEN') {
         document.documentElement.classList.add('onedesk-widget-open');
-        container.style.height = '800px';
-        container.style.width = '412px';
+        container.classList.add('expanded');
       }
 
       console.log('Message received:', event.data);
@@ -41,15 +77,17 @@ async function onReady() {
   }
 }
 
+const addCss = () => {
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = `${BASE_URL}/widget.css`;
+  document.head.appendChild(css);
+};
+
 const createContainer = (config: any) => {
   const container = document.createElement('div');
   container.id = 'onedesk-widget-container';
   container.style.cssText = `
-    position: fixed;    
-    width: 412px;
-    height: 800px;
-    border: none;
-    z-index: 9999;
     left: ${config.widgetPosition === 'bottomLeft' ? config.horizontalOffset + 'px' : 'auto'};
     right: ${config.widgetPosition === 'bottomRight' ? config.horizontalOffset + 'px' : 'auto'};
     bottom: ${config.bottomOffset}px;
@@ -72,6 +110,7 @@ function createWidgetIframe(
   iframe.style.cssText = `
     width: 100%;
     height: 100%;
+    border: none;
   `;
 
   container.appendChild(iframe);
