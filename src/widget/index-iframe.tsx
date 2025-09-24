@@ -2,20 +2,16 @@ import { render } from 'preact';
 import '../assets/css/app.css';
 import InteractiveWidget from './components/InteractiveWidget';
 
-// Global variable to track if widget has been initialized
 let isInitialized = false;
 
-// This script runs inside the iframe
-
-function initializeWidgetIframe() {
+const initializeWidgetIframe = () => {
   try {
-    // Prevent multiple initialization
     if (isInitialized) {
       console.log('Widget iframe already initialized, skipping...');
       return;
     }
 
-    const root = document.getElementById('widget-iframe-root');
+    const root = document.getElementById('onedesk-widget-iframe-root');
 
     if (!root) {
       throw new Error('Widget iframe root element not found');
@@ -29,7 +25,6 @@ function initializeWidgetIframe() {
       />
     );
 
-    // Render component with Preact
     render(component, root);
 
     isInitialized = true;
@@ -37,20 +32,11 @@ function initializeWidgetIframe() {
   } catch (error) {
     console.warn('Widget iframe initialization failed:', error);
   }
-}
+};
 
-// Extend window interface for TypeScript
-declare global {
-  interface Window {
-    initializeWidgetIframe: () => void;
-  }
-}
-
-window.initializeWidgetIframe = initializeWidgetIframe;
-
-// Only initialize immediately if DOM is ready, otherwise let the load event handle it
-if (document.readyState === 'complete') {
+const onReady = () => {
   window.addEventListener('message', (event) => {
+    console.log({ eventIframe: event });
     if (event.data.type === 'WIDGET_CONFIG') {
       const config = event.data.config;
 
@@ -61,5 +47,14 @@ if (document.readyState === 'complete') {
       }
     }
   });
-}
-// initializeWidgetIframe();
+};
+
+const initializeWidget = () => {
+  if (document.readyState !== 'loading') {
+    onReady();
+  } else {
+    document.addEventListener('DOMContentLoaded', onReady);
+  }
+};
+
+initializeWidget();

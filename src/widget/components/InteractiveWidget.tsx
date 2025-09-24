@@ -55,14 +55,17 @@ const InteractiveWidget = ({
   config = defaultConfig,
 }: InteractiveWidgetProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hideLauncher, setHideLauncher] = useState(false);
 
   const isInIframe = window.self !== window.top;
 
-  const toggleWidget = () => {
-    setIsOpen(!isOpen);
+  const toggleWidget = (state?: boolean) => {
+    const updatedState = typeof state === 'boolean' ? state : !isOpen;
+
+    setIsOpen(updatedState);
     if (isInIframe && window.parent) {
       window.parent.postMessage(
-        { type: isOpen ? 'WIDGET_CLOSE' : 'WIDGET_OPEN' },
+        { type: updatedState ? 'WIDGET_OPEN' : 'WIDGET_CLOSE' },
         '*',
       );
     }
@@ -70,7 +73,14 @@ const InteractiveWidget = ({
 
   useEffect(() => {
     window.addEventListener('message', (event) => {
-      console.log({ event });
+      switch (event.data.type) {
+        case 'WIDGET_OVERLAY':
+          toggleWidget(event.data.open);
+          break;
+        case 'WIDGET_LAUNCHER':
+          setHideLauncher(event.data.hide);
+          break;
+      }
     });
   }, []);
 
@@ -78,30 +88,34 @@ const InteractiveWidget = ({
     <>
       <WidgetOverlay
         isOpen={isOpen}
-        handleClose={toggleWidget}
+        handleClose={() => toggleWidget(false)}
         left={config.widgetPosition === 'bottomLeft' ? 0 : undefined}
         right={config.widgetPosition === 'bottomRight' ? 0 : undefined}
         config={config}
       />
 
-      <WidgetToggleButton
-        handleClick={toggleWidget}
-        style={{
-          background: isOpen ? 'white' : config.buttonColor,
-          color: config.buttonTextColor,
-          borderRadius:
-            config.buttonShape === 'rounded'
-              ? '8px'
-              : config.buttonShape === 'pill'
-                ? '9999px'
-                : '0px',
-          boxShadow:
-            '0px 4px 16px rgba(37, 41, 46, 0.12), 0px 0px 1px 0px rgba(209, 217, 224, 0.5)',
-          alignSelf:
-            config.widgetPosition === 'bottomLeft' ? 'flex-start' : 'flex-end',
-        }}
-        config={config}
-      />
+      {!hideLauncher && (
+        <WidgetToggleButton
+          handleClick={toggleWidget}
+          style={{
+            background: isOpen ? 'white' : config.buttonColor,
+            color: config.buttonTextColor,
+            borderRadius:
+              config.buttonShape === 'rounded'
+                ? '8px'
+                : config.buttonShape === 'pill'
+                  ? '9999px'
+                  : '0px',
+            boxShadow:
+              '0px 4px 16px rgba(37, 41, 46, 0.12), 0px 0px 1px 0px rgba(209, 217, 224, 0.5)',
+            alignSelf:
+              config.widgetPosition === 'bottomLeft'
+                ? 'flex-start'
+                : 'flex-end',
+          }}
+          config={config}
+        />
+      )}
     </>
   );
 };
